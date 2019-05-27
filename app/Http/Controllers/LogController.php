@@ -23,23 +23,19 @@ class LogController extends Controller
         $datafinal = $request->query('datafinal');
 
         if($datainicial && $datafinal) {
-            if( $datainicial > $datafinal){
-               return [];
-            }
-            $data = $this->log->whereDate('data_hora', '>=', $datainicial)->whereDate('data_hora', '<=', $datafinal);
+            $data = $this->log->where('data_hora', '>=', $datainicial)->where('data_hora', '<=', $datafinal)->get();
 
         } elseif (!$datainicial && $datafinal) {
-            $data = $this->log->whereDate('data_hora', '<=', $datafinal);
+            $data = $this->log->whereDate('data_hora', '<=', $datafinal)->get();
 
         } elseif (!$datafinal && $datainicial) {
-            $data = $this->log->whereDate('data_hora', '>=', $datainicial);
+            $data = $this->log->whereDate('data_hora', '>=', $datainicial)->get();
 
         } else {
             $data = $this->log->all();
-            return response()->json($data, 200);
         }
 
-        return $data;
+        return response()->json($data, 200);
 
     }
 

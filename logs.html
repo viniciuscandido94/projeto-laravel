@@ -1,0 +1,113 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
+         type="text/css">
+    <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet"
+         type="text/css">
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"
+         type="text/css">
+
+    <script>
+        $(document).ready(function () {
+            const dt = $('#dtTable').DataTable();
+            $('.panel-body').hide();
+
+            $('#pesquisar').on('click', () => {
+
+                dt.clear();
+                const url = 'localhost:8000/api/log';
+                const dataini = $('#dataInicial').val();
+                const datafim = $('#dataFinal').val();
+                if (dataini && datafim){
+                    url += '?datainicial='+dataini+'&datafinal='+datafim;
+                }
+                if (dataini && !datafim){
+                   url += '?datainicial='+dataini;
+                }
+                if (!dataini && datafim){
+                   url += '?datafinal='+datafim;
+                }
+                $.get(url, res => {
+                    $.each(res, function (i, item) {
+                        dt.row.add([
+                            item.data_hora,
+                            item.tipo,
+                            item.mensgem,
+                            item.aplicacao,
+                            item.usuario
+                        ]);
+                    });
+                    dt.draw();
+                    $('.panel-body').show();
+                });
+            });
+
+
+        });
+
+    </script>
+</head>
+
+<body>
+
+<div class="cover">
+    <div class="background-image-fixed cover-image"
+        style="background-image : url('http://pingendo.github.io/pingendo-bootstrap/assets/blurry/800x600/12.jpg')"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input class="form-control" id="dataInicial" placeholder="Data Inicial"
+                                          type="date">
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control" id="dataFinal" placeholder="Data Final"
+                                          type="date">
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="btn btn-block btn-info" id="pesquisar"><i class="fa fa-fw fa-search"></i>Pesquisar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table id="dtTable" class="display" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Data/Hora</th>
+                                <th>Tipo</th>
+                                <th>Mensagem</th>
+                                <th>Aplicação</th>
+                                <th>Usuário</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Data/Hora</th>
+                                <th>Tipo</th>
+                                <th>Mensagem</th>
+                                <th>Aplicação</th>
+                                <th>Usuário</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

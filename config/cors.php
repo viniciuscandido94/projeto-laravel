@@ -10,11 +10,13 @@ return [
      * You can easily create your own cors profile.
      * More info: https://github.com/spatie/laravel-cors/#creating-your-own-cors-profile
      */
+     
     'cors_profile' => Spatie\Cors\CorsProfile\DefaultProfile::class,
 
     /*
      * This configuration is used by `DefaultProfile`.
-     */
+    */
+
     'default_profile' => [
 
         'allow_credentials' => false,
@@ -55,7 +57,25 @@ return [
 
         /*
          * Preflight request will respond with value for the max age header.
-         */
+        */
+
         'max_age' => 60 * 60 * 24,
-    ],
+
+      ],
+        /*
+        |--------------------------------------------------------------------------
+        | Laravel CORS
+        |--------------------------------------------------------------------------
+        |
+        | allowedOrigins, allowedHeaders and allowedMethods can be set to array('*')
+        | to accept any value.
+        |
+        */
+        'supportsCredentials' => false,
+        'allowedOrigins' => ['*'],
+        'allowedHeaders' => ['Content-Type', 'X-Requested-With'],
+        'allowedMethods' => ['*'], // ex: ['GET', 'POST', 'PUT',  'DELETE']
+        'exposedHeaders' => [],
+        'maxAge' => 0
+
 ];
