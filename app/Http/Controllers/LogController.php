@@ -43,20 +43,21 @@ class LogController extends Controller
     {
       try {
 
-         if ( !$request->tipo || ( $request->tipo !== "INFO" &&  $request->tipo !== "WARNING" &&  $request->tipo !== "DEBUG" &&  $request->tipo !== "ERROR" ) ) {
-           $codigo = 500;
-           $return = ['msg' => 'Campo tipo com valor =' . $request->tipo . ' invalido'];
+         $tipo = strtoupper($request->tipo);
+         $codigo = 500;
+         if ( !$tipo || ( $tipo!== "INFO" &&  $tipo !== "WARNING" &&  $tipo !== "DEBUG" &&  $tipo !== "ERROR" ) ) {
+           if( !$tipo ){
+              $return = ['msg' => 'Campo tipo nao foi informado'];
+           } else {
+              $return = ['msg' => 'Campo tipo com valor =' . $request->tipo . ' invalido'];
+           }
          } elseif ( !$request->usuario ) {
-           $codigo = 500;
            $return = ['msg' => 'Campo usuario nao foi informado'];
          } elseif ( !$request->aplicacao ) {
-           $codigo = 500;
            $return = ['msg' => 'Campo aplicacao nao foi informado'];
          } elseif ( !$request->mensagem ) {
-           $codigo = 500;
            $return = ['msg' => 'Campo mensagem nao informado'];
          } elseif ( !$request->data_hora ) {
-           $codigo = 500;
            $return = ['msg' => 'Campo data_hora nao informado'];
          } else {
             $codigo = 200;
